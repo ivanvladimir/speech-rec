@@ -88,8 +88,8 @@ class SentenceW:
         self.label.set_text("")
         self.label.show()        
 
-    def show(self,str):
-        self.label.set_text(str)
+    def show(self,label):
+        self.label.set_text(label)
         h2=self.window.get_screen_height()
         w2=self.window.get_screen_width()
         (w,h)=self.window.get_size()
@@ -121,6 +121,7 @@ class SCKT(threading.Thread):
                 running=True
                 while(running):
                     MSG=self.clientConn.recv(1024)
+                    print MSG
                     if len(MSG)==0:
                         running=False
                         gtk.main_quit()
@@ -131,10 +132,6 @@ class SCKT(threading.Thread):
                             print "Connection finishing"
                         self.sentence.hide()
                         gtk.main_quit()
-                    elif MSG.startswith(':hide'):
-                        self.sentence.hide()
-                    elif MSG.startswith(':record'):
-                        self.sentence.record()
                     else:
                         self.sentence.show(MSG)
 
@@ -163,7 +160,7 @@ if __name__ == "__main__":
     bind=(opts.ip,opts.port)
 
 
-    sentence=SentenceW(False)
+    sentence=SentenceW(True)
     sckt=SCKT(bind,sentence)
     sckt.start()
     sentence.show("")
