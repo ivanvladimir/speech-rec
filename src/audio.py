@@ -49,7 +49,6 @@ def getScore(data):
 
 def callback(in_data, frame_count, time_info, status_):
     global status
-    print len(status['buffer'])
     if status['warmed'] < status['nwarming']:
         status['prevScores'].pop(0)
         status['prevScores'].append(getScore(in_data))
@@ -60,7 +59,6 @@ def callback(in_data, frame_count, time_info, status_):
     if status['on']:
         score = getScore(in_data)
         if score > status['T']:
-            print score, status['T']
             status['buffer'].append(in_data)
             status['detected']=1
         else:
@@ -104,7 +102,8 @@ def getDeviceInfo(device=None):
     return info
 
 
-def connect(info,samplerate=16000,warmingtime=1,size_buffer=1024,listeningtime=.3):
+def connect(info,samplerate=16000,warmingtime=1,
+                            size_buffer=1024,listeningtime=.1):
     stream = audio.open(
         format=pyaudio.paInt16,
         channels=1,

@@ -51,6 +51,12 @@ if __name__ == "__main__":
             action="store", help="Device")
     p.add_argument("-l", "--list",default=False,
         action="store_true", dest="list", help="Lists devices availables")
+    p.add_argument( "--connect",default=False,
+        action="store_true", dest="connect", help="Connects to server to send  utt")
+    p.add_argument("-i","--ip",default="127.0.0.1",dest="ip",
+            action="store", help="IP Addresss to listen")
+    p.add_argument("-p","--port",default=5000,dest="port",type=int,
+            action="store", help="Por to listen from")
     p.add_argument("-v",'--verbose', action='store_true', 
             help="Verbose on")
     p.add_argument('--version', action='version', version='%(prog)s 0.1')
@@ -95,13 +101,23 @@ if __name__ == "__main__":
     info = audio.getDeviceInfo(opts.device)
     stream = audio.connect(info)
 
+    # If connect
+    if opts.connect:
+        import socket
+        bind=(opts.ip,opts.port)
+        sckt=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sckt.connect(bind)
+
     stream.start_stream()
     while True:
         if audio.status['file']:
             data = file('voz.wav', 'rb')
             data.seek(44)
             speechRec.decode_raw(data)
-            print "Recongnize: ",speechRec.get_hyp()[0]
+            utt=speechRec.get_hyp()[0]
+            print "Recongnize: ",utt
+            if opts.connect:
+                sckt.send(utt)
             audio.status['file']=False
         time.sleep(1)
 
