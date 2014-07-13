@@ -21,7 +21,7 @@
 # -------------------------------------------------------------------------
 
 sphinx_config={
-    'hmm':'/usr/share/pocketsphinx/model/hmm/en_US/hub4wsj_sc_8k',
-    'lm':'/usr/share/pocketsphinx/model/lm/en_US/hub4.5000.DMP',  
-    'dict':'/usr/share/pocketsphinx/model/lm/en_US/hub4.5000.dic'    
+    'hmm':'/usr/share/pocketsphinx/model/hmm/wsj1',
+    'lm':'/usr/share/pocketsphinx/model/lm/wsj/wlist5o.3e-7.vp.tg.lm.DMP',  
+    'dict':'/usr/share/pocketsphinx/model/lm/wsj/wlist5o.dic'    
 }
